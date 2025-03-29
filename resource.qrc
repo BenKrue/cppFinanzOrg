@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/ApplicationWindows.qml</file>
+        <file>qml/Dashboard.qml</file>
+        <file>qml/Table.qml</file>
+        <file>images/f_icon.ico</file>
+        <file>images/nutzer.png</file>
+        <file>images/ausloggen.png</file>
+        <file>images/tabelle.png</file>
+        <file>images/dashboard.png</file>
+        <file>qml/globals.js</file>
+    </qresource>
+</RCC>
