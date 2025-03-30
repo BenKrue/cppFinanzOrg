@@ -25,7 +25,7 @@ Rectangle
             Layout.alignment: Qt.AlignCenter
             
             Label {
-                text: "TableView"
+                text: "Deine Finanzen im Detail"
                 color: '#ffffff'
                 font.pixelSize: 24
                 anchors.centerIn: parent
@@ -93,7 +93,16 @@ Rectangle
                     }
                     MouseArea {
                         anchors.fill: parent
-                        onDoubleClicked: editing = true
+                        onDoubleClicked: {
+                            editing = true
+                            editField.forceActiveFocus()
+                        }
+                    }
+                }
+                Connections {
+                    target: tableModel
+                    onDataChanged: {
+                        
                     }
                 }
             }

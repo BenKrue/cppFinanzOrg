@@ -1,5 +1,6 @@
-import QtQuick 6.0
-import QtQuick.Controls 6.0
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtCharts 2.15
 
 Rectangle
 {
@@ -16,9 +17,33 @@ Rectangle
 
         Label {
             text: "Dashboard"
+            color: '#ffffff'
             font.pixelSize: 24
+            anchors.centerIn: parent
+        }
+        ChartView {
+            //anchors.fill: parent
+            title: "Beispiel für ein Balkendiagramm"
+            width: 400
+            height: 700
+            legend.visible: true
+            legend.font.pointSize: 15
+            theme: ChartView.ChartThemeDark
+            legend.alignment: Qt.AlignRight
+            antialiasing: true
+
+            HorizontalStackedBarSeries {
+                id: ioBarchart
+                objectName: "ioBarchart"
+                axisY: BarCategoryAxis { categories: ["Ketegorien", "Ausgaben"] }
+                BarSet { label: "Kredite"; values: [2500, 0] }
+                BarSet { label: "Nebenkosten"; values: [550, 0] }
+                BarSet { label: "Freizeit"; values: [700, 0] }
+                BarSet { label: "Total"; values: [0, 1500] }
+            }
         }
     }
 }
+
 
 

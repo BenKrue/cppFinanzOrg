@@ -3,72 +3,84 @@
 #include <QLOGGINGCATEGORY>
 #include <QDebug>
 
-
-namespace csv {
-    
-
-Q_LOGGING_CATEGORY (LC, "csv::CSVReader", QtDebugMsg);
-
-CSVReader::CSVReader(QObject *parent) : QObject(parent)
+namespace csv
 {
-}
 
-const QStringList &CSVReader::getHeader() const {
-    return header;
-}
+    Q_LOGGING_CATEGORY(LC, "csv::CSVReader", QtDebugMsg);
 
-const QVector<QVector<QVariant>> &CSVReader::getData() const {
-    return m_data;
-}
-
-void CSVReader::saveCSV(const QString &filePath) {
-    QFile file(filePath);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qWarning() << "Fehler beim Öffnen der Datei zum Speichern:" << filePath;
-        return;
+    CSVReader::CSVReader(QObject *parent) : QObject(parent)
+    {
     }
 
-    QTextStream stream(&file);
-    stream << header.join(",") << "\n";
-    
-    for (const auto &row : m_data) {
-        QStringList rowStrings;
-        for (const auto &cell : row) {
-            rowStrings.append(cell.toString());
+    const QStringList &CSVReader::getHeader() const
+    {
+        return m_header;
+    }
+
+    const QVector<QVector<QVariant>> &CSVReader::getData() const
+    {
+        return m_data;
+    }
+
+    void CSVReader::saveCSV(const QString &filePath)
+    {
+        QFile file(filePath);
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            qWarning() << "Fehler beim Öffnen der Datei zum Speichern:" << filePath;
+            return;
         }
-        stream << rowStrings.join(",") << "\n";
-    }
 
-    file.close();
-}
+        QTextStream stream(&file);
+        stream << m_header.join(",") << "\n";
 
-void CSVReader::loadCSV(const QString &filePath) {
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning() << "Fehler beim Öffnen der Datei:" << filePath;
-        return;
-    }
-
-    QTextStream stream(&file);
-    bool firstLine = true;
-
-    while (!stream.atEnd()) {
-        QString line = stream.readLine();
-        QStringList values = line.split(";"); // Trennzeichen anpassen, falls nötig
-
-        if (firstLine) {
-            header = values;
-            firstLine = false;
-        } else {
-            QVector<QVariant> row;
-            for (const QString &value : values) {
-                row.append(value); // Hier könnten auch spezifische Datentyp-Umwandlungen erfolgen
+        for (const auto &row : m_data)
+        {
+            QStringList rowStrings;
+            for (const auto &cell : row)
+            {
+                rowStrings.append(cell.toString());
             }
-            m_data.append(row);
+            stream << rowStrings.join(",") << "\n";
         }
+
+        file.close();
     }
-    emit changedData(m_data);
-    file.close();
-}
+
+    void CSVReader::loadCSV(const QString &filePath)
+    {
+        QFile file(filePath);
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            qWarning() << "Fehler beim Öffnen der Datei:" << filePath;
+            return;
+        }
+
+        QTextStream stream(&file);
+        bool firstLine = true;
+
+        while (!stream.atEnd())
+        {
+            QString line = stream.readLine();
+            QStringList values = line.split(","); // Trennzeichen anpassen, falls nötig
+
+            if (firstLine)
+            {
+                m_header = values;
+                firstLine = false;
+            }
+            else
+            {
+                QVector<QVariant> row;
+                for (const QString &value : values)
+                {
+                    row.append(value); // Hier könnten auch spezifische Datentyp-Umwandlungen erfolgen
+                }
+                m_data.append(row);
+            }
+        }
+        emit changedData(m_data);
+        file.close();
+    }
 
 } // namespace dataModel

@@ -1,12 +1,15 @@
 #pragma once
 
+#include "../controllers/CSVReader.hpp"
+
 #include <QAbstractTableModel>
 #include <QVector>
 
-class TableModel : public QAbstractTableModel {
+class TableModel : public QAbstractTableModel
+{
     Q_OBJECT
 public:
-    explicit TableModel(QStringList header, QVector<QVector<QVariant>> data, QObject *parent = nullptr);
+    explicit TableModel(QSharedPointer<csv::CSVReader> csvReader, QObject *parent = nullptr);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -17,8 +20,6 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
 
-
 private:
-    QVector<QVector<QVariant>> m_data;
-    QStringList m_header;
+    QSharedPointer<csv::CSVReader> m_csvReader;
 };
