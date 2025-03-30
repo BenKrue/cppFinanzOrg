@@ -10,12 +10,13 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
-find_package(Qt6 REQUIRED COMPONENTS Quick Qml)
+find_package(Qt6 REQUIRED COMPONENTS Quick Qml Core Gui Network Charts)
 
 set(SOURCES
     src/main.cpp
     src/models/tableModel.cpp
     src/models/dataModel.cpp
+    src/models/chartModel.cpp
 
     src/controllers/CSVReader.cpp
     src/controllers/calculator.cpp
@@ -29,7 +30,7 @@ add_executable(cppFinanzOrg
     resource.qrc
 )
 
-target_link_libraries(cppFinanzOrg PRIVATE Qt6::Widgets Qt6::Core Qt6::Gui Qt6::Quick Qt6::Network Qt6::Qml -lstdc++)
+target_link_libraries(cppFinanzOrg PRIVATE Qt6::Widgets Qt6::Core Qt6::Gui Qt6::Quick Qt6::Network Qt6::Qml Qt6::Charts -lstdc++)
 
 if(MSVC)
     add_compile_options(/Zc:__cplusplus /permissive-)

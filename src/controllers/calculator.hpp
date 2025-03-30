@@ -1,33 +1,35 @@
 #pragma once
 
-#include "CSVReader.hpp"
 #include "../global_Enums.hpp"
 
 #include <QObject>
 #include <QString>
-#include <QSharedPointer>
-
 #include <QList>
 #include <QVariantMap>
 #include <QMap>
 
-namespace calculator {
+// TODO: Klasse erstellen, die die Berechnungen macht und die Daten an die View weitergibt
+namespace controllers
+{
+    namespace calculator
+    {
 
-class Calculator : public QObject {
-    Q_OBJECT
-public:
-    explicit Calculator(QObject *parent = nullptr);
+        class Calculator : public QObject
+        {
+            Q_OBJECT
+        public:
+            explicit Calculator(QObject *parent = nullptr);
+            ~Calculator();
 
-private:
+            QMap<QString, double> calculateData(const QVariantList &category, const QVariantList &data);
+            double sumByCategory(const QVector<QVariant> &data, enums::categoryType categoryType);
 
+        signals:
+            void calculationsDone(const QVector<QVector<QVariant>> &data);
 
-signals:
-    void calculationsDone(const QVector<QVector<QVariant>> &data);
+        private:
+            double sum(const double number);
+        };
 
-public slots:
-    void calculateData(const QVector<QVector<QVariant>> &data);
-    double sumByCategory(const QVector<QVariant> &data, enums::categoryType categoryType);
-
-};
-
-}
+    } // namespace calculator
+} // namespace controllers

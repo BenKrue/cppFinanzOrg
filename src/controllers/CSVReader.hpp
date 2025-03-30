@@ -9,27 +9,26 @@
 #include <QDebug>
 #include <QObject>
 
-namespace csv {
+namespace csv
+{
 
-class CSVReader : public QObject {
-    Q_OBJECT
-public:
+    class CSVReader : public QObject
+    {
+        Q_OBJECT
+    public:
+        CSVReader(QObject *parent = nullptr);
+        ~CSVReader();
 
-    CSVReader(QObject *parent = nullptr);
-    const QVector<QVector<QVariant>> &getData() const;
-    const QStringList &getHeader() const;
-    void saveCSV(const QString &filePath);
-    void loadCSV(const QString &filePath);
+        const QVector<QVector<QVariant>> &getData() const;
+        const QStringList &getHeader() const;
+        void saveCSV(const QString &filePath);
+        void loadCSV(const QString &filePath);
 
-private:
+    private:
+        QStringList m_header;
+        QVector<QVector<QVariant>> m_data;
 
-    
-
-    QStringList header;
-    QVector<QVector<QVariant>> m_data;
-
-signals:
-    QVector<QVector<QVariant>> changedData(QVector<QVector<QVariant>> data);
-
-};
+    signals:
+        QVector<QVector<QVariant>> changedData(QVector<QVector<QVariant>> data);
+    };
 } // namespace csv

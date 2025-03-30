@@ -1,9 +1,9 @@
-Empfänger;Bezeichung;Mitgliedsnummer;Betrag;Abbuchung;Kategorie;Konto;Inhamberin;Steuerhinweise;Bemerkung
-E.ON;Wärmepumpe;242132777476;-117; Monatsanfang ;Haus-Nebenkosten;Gemeinschaftskonto;Krüger;;
-E.ON;Strom ;242132777513;-60;Monatsanfang ;Haus-Nebenkosten;Gemeinschaftskonto;Krüger;;
+Empfänger;Bezeichung;Kundennummer, Vertagsnummer, Mitgliedsnummer;Betrag [Monat];Abbuchung [Interval];Kategorie;Konto;Inhamber*in;Steuerhinweise;Bemerkung
+E.ON;Wärmepumpe;242132777476;-97; Monatsanfang ;Haus-Nebenkosten;Gemeinschaftskonto;Krüger;;
+E.ON;Strom ;242132777513;-80;Monatsanfang ;Haus-Nebenkosten;Gemeinschaftskonto;Krüger;;
 Marktflecken Villmar;Wasser- und Abwassergebühr;108767.200.1;-67,59; 02/05/08/11 ;Haus-Nebenkosten;Gemeinschaftskonto;Krüger;;
 Marktflecken Villmar;Grundbesitzabgabe;108767.200.1;-25,55; 02/05/08/11 ;Steuer;Gemeinschaftskonto;Krüger;;
-Abfallbeseitigung;Abfallwirtschaftsbetrieb Limburg-Weilburg;KT1505197TK;-20,49; 03/05/08/11 ;Haus-Nebenkosten;Gemeinschaftskonto;Krüger;;
+Abfallbeseitigung;Abfallwirtschaftsbetrieb Limburg-Weilburg;KT1505197TK;-21,42; 03/05/08/11 ;Haus-Nebenkosten;Gemeinschaftskonto;Krüger;;
 GEZ - Der Rundfunkbeitrag;Rundfunkgebühr;679264393;-18,36;Monatlich;Haus-Nebenkosten;Gemeinschaftskonto;Krüger;;
 Netflix;Unterhaltung;;-12,99;Monatlich;Haus-Nebenkosten;Sparkasse;Judith Krüger;;ab 6.12. in Telekom Magenta paket
 Amazon Prime;Unterhaltung;;-5,83;Monatlich;Haus-Nebenkosten;Sparkasse;Judith Krüger;;
@@ -17,7 +17,7 @@ Debeka | Versichern und Bausparen;Bausparvertrag KfW;801934390;-50; 1. Montat ;S
 Debeka | Versichern und Bausparen;Bausparvertrag Bau;801934382;-50; 1. Montat ;Sparen;Gemeinschaftskonto;Krüger;;
 O2 (Telefonica Deutschland HoldingAG);Handy Vertrag;;-12,50;Monatlich;Kommunikation;Sparkasse;Judith Krüger;;
 O2 (Telefonica Deutschland HoldingAG);Handy;;0;Monatlich;Kommunikation;Sparkasse;Judith Krüger;;
-Telekom;Telefon/Internet/TV;2743097593;-19,95;Monatlich;Haus-Nebenkosten;BB Bank;Benjamin Krüger;;ab 6.12 - 6 Monate
+Telekom;Telefon/Internet/TV;2743097593;-26,89;Monatlich;Haus-Nebenkosten;BB Bank;Benjamin Krüger;;ab 6.12 - 6 Monate
 Deutsch Glasfaser GmbH;Telefon/Internet/TV;3626572;0;;Haus-Nebenkosten;Gemeinschaftskonto;Krüger;;gekündigt
 AXA easy Versicherung AG;Haftpflichtversicherung;09050000720078960;-6,30;Monatlich;Versicherung;Sparkasse;Judith Krüger;Werbekosten;
 GEV-Versicherung;Wohngebäudeversicherung;09060000720040137;-25,12; November ;Versicherung;Gemeinschaftskonto;Krüger;Allgemeine Ausgaben;

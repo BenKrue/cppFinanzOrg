@@ -5,17 +5,21 @@
 #include <QLoggingCategory>
 #include <QScreen>
 
-#include "models/tableModel.hpp"
+#include "models/chartModel.hpp"
 #include "models/dataModel.hpp"
+#include "models/tableModel.hpp"
 #include "controllers/CSVReader.hpp"
 #include "controllers/calculator.hpp"
 
-int main(int argc, char *argv[]) {
+Q_LOGGING_CATEGORY(LC, "main", QtDebugMsg);
+
+int main(int argc, char *argv[])
+{
     QApplication app(argc, argv);
 
     QLoggingCategory::setFilterRules("qt.qml.warning=true\nqt.qml.info=true\nqt.qml.debug=true");
     app.setWindowIcon(QIcon(":/images/f_icon.ico"));
-    
+
     QQmlApplicationEngine engine;
 
     const QScreen *screen = QGuiApplication::primaryScreen();
@@ -32,27 +36,36 @@ int main(int argc, char *argv[]) {
 
     QSharedPointer<csv::CSVReader> csvReader;
     csvReader = QSharedPointer<csv::CSVReader>::create();
-    QSharedPointer<calculator::Calculator> calculator;
-    calculator = QSharedPointer<calculator::Calculator>::create();
-    dataModel dataModel(calculator, csvReader);
+    csvReader->loadCSV("C:/src/cpp Projekte/cppFinanzOrg/FinanzOrg.csv");
 
-    csvReader->loadCSV("C:/src/cppFinanzOrg/FinanzOrg.csv");
-
-    const QStringList &header = csvReader->getHeader();
-    const QVector<QVector<QVariant>> &data = csvReader->getData();
-
-    TableModel myTableModel(header, data, &engine);
+    models::dataModel::dataModel dataModel(csvReader);
+    models::TableModel myTableModel(csvReader, &engine);
     engine.rootContext()->setContextProperty("tableModel", &myTableModel);
+    ChartModel myChartModel(dataModel.getDataByCategory(), &engine);
+
+    // QList<QVariant> werte;
+    // QList<QVariant> category;
+    // for (int i = 0; i < myChartModel.rowCount(); i++)
+    // {
+
+    //     werte.append(myChartModel.data(myChartModel.index(i, 0), 257).toDouble());
+    //     category.append(dataModel.getDataByCategory().keys()[i]);
+    //     qCDebug(LC) << werte[i];
+    //     qCDebug(LC) << category[i];
+    // }
+    // engine.rootContext()->setContextProperty("werte", werte);
+    // engine.rootContext()->setContextProperty("category", category);
+    engine.rootContext()->setContextProperty("dataModel", &dataModel);
 
     const QUrl url(QStringLiteral("qrc:/qml/ApplicationWindows.qml"));
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                     &app, [url](QObject *obj, const QUrl &objUrl) {
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &app, [url](QObject *obj, const QUrl &objUrl)
+                     {
         if (!obj && url == objUrl)
-            QCoreApplication::exit(-1);
-    }, Qt::QueuedConnection);
+            QCoreApplication::exit(-1); }, Qt::QueuedConnection);
     engine.load(url);
 
-    if(engine.rootObjects().isEmpty()){
+    if (engine.rootObjects().isEmpty())
+    {
         qWarning() << "Unable to load QML";
     }
 

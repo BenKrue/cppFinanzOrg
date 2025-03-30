@@ -1,31 +1,57 @@
 #pragma once
 
-#include "../controllers/calculator.hpp"
 #include "../controllers/CSVReader.hpp"
 
 #include <QObject>
 #include <QSharedPointer>
 #include <QMap>
 
-class dataModel : public QObject
+// forward declaration of class
+namespace controllers
 {
-    Q_OBJECT
+    namespace calculator
+    {
+        class Calculator;
+    }
+}
 
-public:
-    explicit dataModel(QSharedPointer<calculator::Calculator> calculator, QSharedPointer<csv::CSVReader> csvReader, QObject *parent = nullptr);
-    ~dataModel() = default;
+namespace models
+{
+    namespace dataModel
+    {
 
-    const QMap<QString, QVector<QVariant>> &getColumnMap() const { return m_columnMap; }
+        class dataModel : public QObject
+        {
+            Q_OBJECT
+            Q_PROPERTY(QVariantList werte READ werte NOTIFY werteChanged)
+            Q_PROPERTY(QVariantList category READ category NOTIFY categoryChanged)
 
-private:
-    void getData();
-    void dataByCategory(const QVector<QVector<QVariant>> &data);
-    QMap<QString, QVector<QVariant>> m_columnMap;
+        public:
+            explicit dataModel(QSharedPointer<csv::CSVReader> csvReader, QObject *parent = nullptr);
+            ~dataModel();
 
-    QSharedPointer<calculator::Calculator> m_calculator;
-    QSharedPointer<csv::CSVReader> m_csvReader;
+            const QMap<QString, QVector<QVariant>> &getColumnMap() const { return m_columnMap; }
+            QMap<QString, double> getDataByCategory();
 
-public slots:
-    void setDataByCategory(const QVector<QVector<QVariant>> &data);
+            QVariantList werte() const { return m_werte; }
+            QVariantList category() const { return m_dataByCategory; }
 
-};
+        private:
+            void getData();
+            void dataByCategory(const QVector<QVector<QVariant>> &data);
+            QMap<QString, QVector<QVariant>> m_columnMap;
+            // QMap<QString, double> m_dataByCategory;
+
+            QVariantList m_dataByCategory;
+            QVariantList m_werte;
+
+            QSharedPointer<csv::CSVReader> m_csvReader;
+            QSharedPointer<controllers::calculator::Calculator> m_calculator{nullptr};
+
+        signals:
+            void werteChanged();
+            void categoryChanged();
+        };
+
+    } // namespace dataModel
+} // namespace models

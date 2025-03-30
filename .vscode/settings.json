@@ -1,0 +1,31 @@
+{
+    "files.associations": {
+        "qobject": "cpp",
+        "qabstractbarseries": "cpp",
+        "qabstractseries": "cpp",
+        "qchartglobal": "cpp",
+        "xlocmes": "cpp",
+        "qstring": "cpp",
+        "array": "cpp",
+        "chrono": "cpp",
+        "deque": "cpp",
+        "filesystem": "cpp",
+        "format": "cpp",
+        "forward_list": "cpp",
+        "initializer_list": "cpp",
+        "list": "cpp",
+        "span": "cpp",
+        "vector": "cpp",
+        "xhash": "cpp",
+        "xstring": "cpp",
+        "xtree": "cpp",
+        "xutility": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "string_view": "cpp",
+        "qabstracttablemodel": "cpp",
+        "system_error": "cpp",
+        "xlocale": "cpp"
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
+}

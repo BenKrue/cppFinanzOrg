@@ -14,7 +14,9 @@ ApplicationWindow
     color: "white"
 
     property var createComponantDashboard
+    property var customTableComponend
     property var createComponentTableView
+    property var createComponentDummy
 
     menuBar: MenuBar
     {
@@ -76,7 +78,7 @@ ApplicationWindow
                 width: 40
                 height: 40
                 x: (rectSideBar.width / 2) - (width / 2)
-                y: (rectSideBar.height / 3) + 100
+                y: (rectSideBar.height / 3)
 
                 MouseArea
                 {
@@ -84,15 +86,10 @@ ApplicationWindow
                     hoverEnabled: true
                     onClicked: {
                         
-                        if (!createComponantDashboard) {
+                        if (!Global.dashboardEnabled) {
                             Global.dashboardEnabled = true
                             Global.tableViewEnabled = false
                             jsHelper.createDashboard(Global.dashboardEnabled)
-                        }
-                        else {
-                            createComponantDashboard.destroy()
-                            Global.dashboardEnabled = false
-                            Global.tableViewEnabled = false
                         }
                     }
                     onEntered: {
@@ -107,6 +104,15 @@ ApplicationWindow
                 Behavior on width { NumberAnimation { duration: 200 } }
                 Behavior on height { NumberAnimation { duration: 200 } }
             }
+            Text {
+                id: dashboardImageText
+                text: "Dashboard"
+                anchors.top: imageDashboard.bottom // Text unter dem Bild
+                anchors.horizontalCenter: imageDashboard.horizontalCenter // Text zentriert unter dem Bild
+                font.pixelSize: 20
+                color: "black"
+                anchors.topMargin: 10 // Abstand zwischen Bild und Text
+            }
             Image
             {
                 id: imageTable
@@ -114,7 +120,7 @@ ApplicationWindow
                 width: 40
                 height: 40
                 x: (rectSideBar.width / 2) - (width / 2)
-                y: (rectSideBar.height / 3)
+                y: (rectSideBar.height / 3) + 100
 
                 MouseArea
                 {
@@ -122,16 +128,11 @@ ApplicationWindow
                     hoverEnabled: true
                     onClicked: {
                         
-                        // if (!customTableComponend) {
-                        //     Global.dashboardEnabled = false
-                        //     Global.tableViewEnabled = true
-                        jsHelper.createTableView(true)
-                        // }
-                        // else {
-                        //     customTableComponend.destroy()
-                        //     Global.dashboardEnabled = false
-                        //     Global.tableViewEnabled = false
-                        // }
+                        if (!Global.tableViewEnabled) {
+                            Global.dashboardEnabled = false
+                            Global.tableViewEnabled = true
+                            jsHelper.createTableView(Global.tableViewEnabled)
+                        }
                     }
                     onEntered: {
                         imageTable.width = 45;
@@ -145,6 +146,15 @@ ApplicationWindow
                 Behavior on width { NumberAnimation { duration: 200 } }
                 Behavior on height { NumberAnimation { duration: 200 } }
             }
+            Text {
+                id: tableImageText
+                text: "Table"
+                anchors.top: imageTable.bottom // Text unter dem Bild
+                anchors.horizontalCenter: imageTable.horizontalCenter // Text zentriert unter dem Bild
+                font.pixelSize: 20
+                color: "black"
+                anchors.topMargin: 10 // Abstand zwischen Bild und Text
+            }
             Image
             {
                 id: imageLogOut
@@ -152,7 +162,7 @@ ApplicationWindow
                 width: 40
                 height: 40
                 x: (rectSideBar.width / 2) - (width / 2)
-                y: (rectSideBar.height - (3 * height))
+                y: (rectSideBar.height - (3 * height)) - 100
 
                 MouseArea
                 {
@@ -170,6 +180,15 @@ ApplicationWindow
                 }
                 Behavior on width { NumberAnimation { duration: 200 } }
                 Behavior on height { NumberAnimation { duration: 200 } }
+            }
+            Text {
+                id: logOutImageText
+                text: "Exit"
+                anchors.top: imageLogOut.bottom
+                anchors.horizontalCenter: imageLogOut.horizontalCenter
+                font.pixelSize: 20
+                color: "black"
+                anchors.topMargin: 10
             }
         }
         Rectangle
@@ -190,9 +209,9 @@ ApplicationWindow
                         dashboardPosX: 0,
                         dashboardPosY: 0,
                         dashboardView: visible,
-                        dashboarWidth: rectView.width,
+                        dashboardWidth: rectView.width,
                         dashboardHeight: rectView.height,
-                        dashboardColor: '#ffffff' 
+                        dashboardColor: '#FFFFFF' 
                     });
                 }
 
@@ -202,8 +221,18 @@ ApplicationWindow
                         tableViewPosY: 0,
                         tableViewView: visible,
                         tableViewWidth: rectView.width,
-                        TableViewHeight: rectView.height,
+                        tableViewHeight: rectView.height,
                         tableViewColor: '#000000'
+                    });
+                }
+                function createDummyView(visible) {
+                    createComponentDummy = customDummyComponent.createObject(rectView, {
+                        dummyPosX: 0,
+                        dummyPosY: 0,
+                        dummyView: visible,
+                        dummyWidth: rectView.width,
+                        dummyHeight: rectView.height,
+                        dummyColor: '#ffffff'
                     });
                 }
             }
@@ -218,5 +247,10 @@ ApplicationWindow
     {
         id: customTableComponent
         Table {}
+    }
+    Component
+    {
+        id: customDummyComponent
+        Dummy {}
     }
 }

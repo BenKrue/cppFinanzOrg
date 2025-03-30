@@ -1,13 +1,22 @@
 #include "category.hpp"
 
-
-namespace category {
-    
-Category::Category(QObject *parent) 
-    : QObject(parent)
+namespace controllers
 {
-    
-}
+    namespace category
+    {
 
-} // namespace category
+        Category::Category(QObject *parent)
+            : QObject(parent)
+        {
+        }
 
+        Category::~Category()
+        {
+        }
+
+        void Category::setCategoryType(QString categoryType)
+        {
+        }
+
+    } // namespace category
+} // namespace controllers

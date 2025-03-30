@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/ApplicationWindows.qml</file>
+        <file>qml/Dummy.qml</file>
         <file>qml/Dashboard.qml</file>
         <file>qml/Table.qml</file>
         <file>images/f_icon.ico</file>

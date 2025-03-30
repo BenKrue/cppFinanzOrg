@@ -1,49 +1,69 @@
 #include "dataModel.hpp"
 
+#include "../controllers/calculator.hpp"
+
 #include <QLOGGINGCATEGORY>
 #include <QDebug>
 
-
-Q_LOGGING_CATEGORY (LC, "dataModel", QtDebugMsg);
-
-dataModel::dataModel(QSharedPointer<calculator::Calculator> calculator, QSharedPointer<csv::CSVReader> csvReader, QObject *parent)
-    : QObject(parent),
-      m_calculator(calculator),
-      m_csvReader(csvReader)
+namespace models
 {
-    QObject::connect(m_csvReader.data(), &csv::CSVReader::changedData, m_calculator.data(), &calculator::Calculator::calculateData);
-    QObject::connect(m_calculator.data(), &calculator::Calculator::calculationsDone, this, &dataModel::setDataByCategory);
+    namespace dataModel
+    {
 
-    getData();
+        Q_LOGGING_CATEGORY(LC, "dataModel", QtDebugMsg);
 
-}
-
-void dataModel::getData()
-{
-    const QVector<QVector<QVariant>> &data = m_csvReader->getData();
-    dataByCategory(data);
-}
-
-void dataModel::setDataByCategory(const QVector<QVector<QVariant>> &data)
-{
-    //qCDebug(LC) << __func__ << "setDataByCategory" << data;
-}
-
-void dataModel::dataByCategory(const QVector<QVector<QVariant>> &data) {
-    QMap<QString, QVector<QVariant>> columnMap;
-
-    if (data.isEmpty()) {
-        return;
-    }
-
-    QVector<QVariant> headers = data[0];
-
-    for (int col = 0; col < headers.size(); ++col) {
-        QString columnName = headers[col].toString();
-
-        for (int row = 1; row < data.size(); ++row) {
-            columnMap[columnName].append(data[row][col]);
+        dataModel::dataModel(QSharedPointer<csv::CSVReader> csvReader, QObject *parent)
+            : QObject(parent),
+              m_csvReader(csvReader)
+        {
+            getData();
         }
-    }
-    m_columnMap = columnMap;
-}
+
+        dataModel::~dataModel()
+        {
+            qCDebug(LC) << __func__ << "destructor";
+        }
+
+        void dataModel::getData()
+        {
+            const QVector<QVector<QVariant>> &data = m_csvReader->getData();
+            dataByCategory(data);
+        }
+
+        QMap<QString, double> dataModel::getDataByCategory()
+        {
+            return {}; //m_dataByCategory;
+        }
+
+        void dataModel::dataByCategory(const QVector<QVector<QVariant>> &data)
+        {
+            QMap<QString, QVector<QVariant>> columnMap;
+            if (data.isEmpty())
+            {
+                return;
+            }
+
+            auto headers = m_csvReader->getHeader();
+            for (int col = 0; col < headers.size(); ++col)
+            {
+                for (int row = 0; row < data.size(); ++row)
+                {
+                    columnMap[headers[col]].append(data[row][col]);
+                }
+            }
+            auto dataByCategory = m_calculator->calculateData(columnMap.value("Kategorie"), columnMap.value("Betrag [Monat]"));
+            QVariantList dataList;
+            QVariantList dataCategory;
+            for (auto it = dataByCategory.begin(); it != dataByCategory.end(); ++it) {
+                dataList.append(QVariant(it.value()));
+                dataCategory.append(QVariant(it.key()));
+            }
+            m_werte = dataList;
+            m_dataByCategory = dataCategory;
+            m_columnMap = columnMap;
+            emit categoryChanged();
+            emit werteChanged();
+        }
+
+    } // namespace dataModel
+} // namespace models
