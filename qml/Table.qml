@@ -99,12 +99,12 @@ Rectangle
                         }
                     }
                 }
-                // Connections {
-                //     target: tableModel
-                //     function onDataChanged() {
-                //         console.log("Signal onDataChanged empfangen");
-                //     }
-                // }
+                Connections {
+                    target: tableModel
+                    onDataChanged: {
+                        
+                    }
+                }
             }
         }
     }

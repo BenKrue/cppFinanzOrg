@@ -24,9 +24,9 @@ namespace csv
         void saveCSV(const QString &filePath);
         void loadCSV(const QString &filePath);
 
-    private:
-        QStringList m_header;
-        QVector<QVector<QVariant>> m_data;
+    QStringList m_header;
+    QVector<QVector<QVariant>> m_data;
+private:
 
     signals:
         QVector<QVector<QVariant>> changedData(QVector<QVector<QVariant>> data);

@@ -5,15 +5,11 @@
 
 namespace csv
 {
+
     Q_LOGGING_CATEGORY(LC, "csv::CSVReader", QtDebugMsg);
 
     CSVReader::CSVReader(QObject *parent) : QObject(parent)
     {
-    }
-
-    CSVReader::~CSVReader()
-    {
-        qCDebug(LC) << __func__ << "destroyed";
     }
 
     const QStringList &CSVReader::getHeader() const
@@ -31,7 +27,7 @@ namespace csv
         QFile file(filePath);
         if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         {
-            qCWarning(LC) << __func__ << "Fehler beim Öffnen der Datei zum Speichern:" << filePath;
+            qWarning() << "Fehler beim Öffnen der Datei zum Speichern:" << filePath;
             return;
         }
 
@@ -51,47 +47,12 @@ namespace csv
         file.close();
     }
 
-    QString detectDelimiter(const QString &filePath)
-    {
-        QFile file(filePath);
-        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        {
-            qCWarning(LC) << __func__ << "Konnte die Datei nicht öffnen:" << filePath << "Fehler:" << file.errorString();
-            return QString();
-        }
-
-        QTextStream in(&file);
-        QString firstLine = in.readLine();
-        file.close();
-
-        // Mögliche Trennzeichen
-        QStringList delimiters = {";", "\t", "|"};
-        QString detectedDelimiter;
-
-        foreach (const QString &delimiter, delimiters)
-        {
-            if (firstLine.contains(delimiter))
-            {
-                detectedDelimiter = delimiter;
-                break;
-            }
-        }
-
-        if (detectedDelimiter.isEmpty())
-        {
-            qCWarning(LC) << __func__ << "Kein Trennzeichen gefunden in der Datei:" << filePath;
-        }
-        return detectedDelimiter;
-    }
-
     void CSVReader::loadCSV(const QString &filePath)
     {
         QFile file(filePath);
-        QString delimiter = detectDelimiter(filePath);
-
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         {
-            qCWarning(LC) << __func__ << "Fehler beim Öffnen der Datei:" << filePath << "Fehler:" << file.errorString();
+            qWarning() << "Fehler beim Öffnen der Datei:" << filePath;
             return;
         }
 
@@ -101,7 +62,7 @@ namespace csv
         while (!stream.atEnd())
         {
             QString line = stream.readLine();
-            QStringList values = line.split(delimiter);
+            QStringList values = line.split(","); // Trennzeichen anpassen, falls nötig
 
             if (firstLine)
             {
@@ -118,7 +79,7 @@ namespace csv
                 m_data.append(row);
             }
         }
-        // emit changedData(m_data);
+        emit changedData(m_data);
         file.close();
     }
 

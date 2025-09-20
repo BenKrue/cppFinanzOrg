@@ -5,15 +5,11 @@
 #include <QAbstractTableModel>
 #include <QVector>
 
-namespace models
+class TableModel : public QAbstractTableModel
 {
-
-    class TableModel : public QAbstractTableModel
-    {
-        Q_OBJECT
-    public:
-        explicit TableModel(QSharedPointer<csv::CSVReader> csvReader, QObject *parent = nullptr);
-        ~TableModel();
+    Q_OBJECT
+public:
+    explicit TableModel(QSharedPointer<csv::CSVReader> csvReader, QObject *parent = nullptr);
 
         int rowCount(const QModelIndex &parent = QModelIndex()) const override;
         int columnCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -24,8 +20,6 @@ namespace models
         QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
         void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
 
-    private:
-        QSharedPointer<csv::CSVReader> m_csvReader;
-    };
-
-} // namespace models
+private:
+    QSharedPointer<csv::CSVReader> m_csvReader;
+};

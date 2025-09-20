@@ -11,8 +11,6 @@
 #include "controllers/CSVReader.hpp"
 #include "controllers/calculator.hpp"
 
-Q_LOGGING_CATEGORY(LC, "main", QtDebugMsg);
-
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
@@ -38,8 +36,7 @@ int main(int argc, char *argv[])
     csvReader = QSharedPointer<csv::CSVReader>::create();
     csvReader->loadCSV("C:/src/cpp Projekte/cppFinanzOrg/FinanzOrg.csv");
 
-    models::dataModel::dataModel dataModel(csvReader);
-    models::TableModel myTableModel(csvReader, &engine);
+    TableModel myTableModel(csvReader, &engine);
     engine.rootContext()->setContextProperty("tableModel", &myTableModel);
     ChartModel myChartModel(dataModel.getDataByCategory(), &engine);
 
