@@ -12,6 +12,8 @@ namespace csv
     {
     }
 
+    CSVReader::~CSVReader() {}
+
     const QStringList &CSVReader::getHeader() const
     {
         return m_header;
