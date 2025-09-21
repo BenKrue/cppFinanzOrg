@@ -18,7 +18,7 @@ public:
         ValueRole = Qt::UserRole + 1
     };
 
-    explicit ChartModel(QMap<QString, double> dataByCategory, QObject *parent = nullptr);
+    explicit ChartModel(QVariantList dataByCategory, QObject *parent = nullptr);
     ~ChartModel();
 
     Q_INVOKABLE int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -26,5 +26,5 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
 private:
-    QMap<QString, double> m_dataByCategory;
+    QVariantList m_dataByCategory;
 };

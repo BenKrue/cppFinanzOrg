@@ -31,7 +31,7 @@ namespace models
             ~dataModel();
 
             const QMap<QString, QVector<QVariant>> &getColumnMap() const { return m_columnMap; }
-            QMap<QString, double> getDataByCategory();
+            QVariantList getDataByCategory();
 
             QVariantList werte() const { return m_werte; }
             QVariantList category() const { return m_dataByCategory; }
@@ -40,7 +40,6 @@ namespace models
             void getData();
             void dataByCategory(const QVector<QVector<QVariant>> &data);
             QMap<QString, QVector<QVariant>> m_columnMap;
-            // QMap<QString, double> m_dataByCategory;
 
             QVariantList m_dataByCategory;
             QVariantList m_werte;

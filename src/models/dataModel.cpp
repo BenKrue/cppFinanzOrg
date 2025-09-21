@@ -30,9 +30,9 @@ namespace models
             dataByCategory(data);
         }
 
-        QMap<QString, double> dataModel::getDataByCategory()
+        QVariantList dataModel::getDataByCategory()
         {
-            return {}; //m_dataByCategory;
+            return m_dataByCategory;
         }
 
         void dataModel::dataByCategory(const QVector<QVector<QVariant>> &data)
@@ -54,7 +54,8 @@ namespace models
             auto dataByCategory = m_calculator->calculateData(columnMap.value("Kategorie"), columnMap.value("Betrag [Monat]"));
             QVariantList dataList;
             QVariantList dataCategory;
-            for (auto it = dataByCategory.begin(); it != dataByCategory.end(); ++it) {
+            for (auto it = dataByCategory.begin(); it != dataByCategory.end(); ++it)
+            {
                 dataList.append(QVariant(it.value()));
                 dataCategory.append(QVariant(it.key()));
             }
