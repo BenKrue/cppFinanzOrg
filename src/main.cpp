@@ -4,6 +4,10 @@
 #include <QIcon>
 #include <QLoggingCategory>
 #include <QScreen>
+#include <QShortcut>
+#include <QKeySequence>
+#include <QQuickWindow>
+#include <QKeyEvent>
 
 #include "models/chartModel.hpp"
 #include "models/dataModel.hpp"
@@ -12,11 +16,50 @@
 #include "controllers/calculator.hpp"
 #include "AppPaths.hpp"
 
+class ReloadHandler : public QObject
+{
+    Q_OBJECT
+public:
+    ReloadHandler(QQmlApplicationEngine &engine, const QUrl &url)
+        : m_engine(engine), m_url(url) {}
+
+protected:
+    bool eventFilter(QObject *obj, QEvent *event) override
+    {
+        if (event->type() == QEvent::KeyPress)
+        {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+            if (keyEvent->key() == Qt::Key_R)
+            {
+                qDebug() << "Reloading QML...";
+                reloadQml();
+                return true; // Event verbraucht
+            }
+        }
+        return QObject::eventFilter(obj, event);
+    }
+
+private:
+    void reloadQml()
+    {
+        // Alte Root-Objekte zerstören
+        for (QObject *obj : m_engine.rootObjects())
+            obj->deleteLater();
+
+        m_engine.clearComponentCache();
+        m_engine.load(m_url);
+    }
+
+    QQmlApplicationEngine &m_engine;
+    QUrl m_url;
+};
+
 QString AppPaths::installLocation;
 QString AppPaths::userConfigLocation;
 
 int main(int argc, char *argv[])
 {
+
     QApplication app(argc, argv);
 
     QString installPath = AppPaths::getInstallLocation();
@@ -72,17 +115,18 @@ int main(int argc, char *argv[])
     // engine.rootContext()->setContextProperty("category", category);
     engine.rootContext()->setContextProperty("dataModel", &dataModel);
 
+#ifdef Live_Reload
     const QUrl url(QStringLiteral("qrc:/qml/ApplicationWindows.qml"));
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &app, [url](QObject *obj, const QUrl &objUrl)
-                     {
-        if (!obj && url == objUrl)
-            QCoreApplication::exit(-1); }, Qt::QueuedConnection);
+#else
+    const QUrl url(QUrl::fromLocalFile("qml/ApplicationWindows.qml"));
+#endif
+
     engine.load(url);
 
-    if (engine.rootObjects().isEmpty())
-    {
-        qWarning() << "Unable to load QML";
-    }
+    ReloadHandler handler(engine, url);
+    app.installEventFilter(&handler);
 
     return app.exec();
 }
+
+#include "main.moc"
