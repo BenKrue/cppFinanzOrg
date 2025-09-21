@@ -9,7 +9,7 @@ ApplicationWindow
     id: root
     visible: true
     width: Screen.width
-    height: Screen.height
+    height: Screen.height - 100
     title: "FinanzOrg - Benjamin Krüger"
     color: "white"
 

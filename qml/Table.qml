@@ -101,8 +101,8 @@ Rectangle
                 }
                 Connections {
                     target: tableModel
-                    onDataChanged: {
-                        
+                    function onDataChanged() {
+                        console.log("onDataChanged Clicked")
                     }
                 }
             }
