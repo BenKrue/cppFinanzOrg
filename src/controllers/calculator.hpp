@@ -22,7 +22,7 @@ namespace controllers
             ~Calculator();
 
             QMap<QString, double> calculateData(const QVariantList &category, const QVariantList &data);
-            double sumByCategory(const QVector<QVariant> &data, enums::categoryType categoryType);
+            double sumByCategory(const QVector<QVariant> &data, enums::tabel::header headerType);
 
         signals:
             void calculationsDone(const QVector<QVector<QVariant>> &data);
