@@ -14,6 +14,7 @@ find_package(Qt6 REQUIRED COMPONENTS Quick Qml Core Gui Network Charts)
 
 set(SOURCES
     src/main.cpp
+    src/AppPaths.cpp
     src/models/tableModel.cpp
     src/models/dataModel.cpp
     src/models/chartModel.cpp

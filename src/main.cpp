@@ -10,10 +10,27 @@
 #include "models/tableModel.hpp"
 #include "controllers/CSVReader.hpp"
 #include "controllers/calculator.hpp"
+#include "AppPaths.hpp"
+
+QString AppPaths::installLocation;
+QString AppPaths::userConfigLocation;
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+
+    QString installPath = AppPaths::getInstallLocation();
+    qDebug() << "Install path:" << installPath;
+
+    QString appDataPath = AppPaths::getAppDataLocation();
+    qDebug() << "App data path:" << appDataPath;
+
+    QString userConfigPath = AppPaths::getUserConfigLocation();
+    qDebug() << "User config path:" << userConfigPath;
+
+    AppPaths::setUserConfigLocation("/path/to/user/config");
+    userConfigPath = AppPaths::getUserConfigLocation();
+    qDebug() << "User config path (after setting):" << userConfigPath;
 
     QLoggingCategory::setFilterRules("qt.qml.warning=true\nqt.qml.info=true\nqt.qml.debug=true");
     app.setWindowIcon(QIcon(":/images/f_icon.ico"));
@@ -34,6 +51,7 @@ int main(int argc, char *argv[])
 
     QSharedPointer<csv::CSVReader> csvReader;
     csvReader = QSharedPointer<csv::CSVReader>::create();
+    csvReader->loadCSV(appDataPath + "/FinanzOrg.csv");
     csvReader->loadCSV("C:/src/cpp Projekte/cppFinanzOrg/FinanzOrg.csv");
 
     TableModel myTableModel(csvReader, &engine);
