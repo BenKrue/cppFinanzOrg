@@ -173,7 +173,7 @@ namespace controllers
             return {};
         }
 
-        double Calculator::sumByCategory(const QVector<QVariant> &data, enums::categoryType categoryType)
+        double Calculator::sumByCategory(const QVector<QVariant> &data, enums::tabel::header headerType)
         {
             double sum = 0.0;
 
