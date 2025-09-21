@@ -95,11 +95,13 @@ int main(int argc, char *argv[])
     QSharedPointer<csv::CSVReader> csvReader;
     csvReader = QSharedPointer<csv::CSVReader>::create();
     csvReader->loadCSV(appDataPath + "/FinanzOrg.csv");
-    csvReader->loadCSV("C:/src/cpp Projekte/cppFinanzOrg/FinanzOrg.csv");
+
+    QSharedPointer<models::dataModel::dataModel> dataModel;
 
     TableModel myTableModel(csvReader, &engine);
     engine.rootContext()->setContextProperty("tableModel", &myTableModel);
-    ChartModel myChartModel(dataModel.getDataByCategory(), &engine);
+    dataModel = QSharedPointer<models::dataModel::dataModel>::create(csvReader, &engine);
+    ChartModel myChartModel(dataModel->getDataByCategory(), &engine);
 
     // QList<QVariant> werte;
     // QList<QVariant> category;
